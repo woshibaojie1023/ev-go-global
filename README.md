@@ -2,7 +2,7 @@
 
 > 面向中国车企出海的「目标市场决策」交互工具 —— 2027 届秋招作品集 MVP。
 
-**在线体验**：<https://USERNAME.github.io/REPO/>
+**在线体验**：<https://woshibaojie1023.github.io/ev-go-global/>
 
 ## 这是什么
 
