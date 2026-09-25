@@ -1,0 +1,10 @@
+# 一键发布用便携 Git（仅本地工具，不入库）
+/tools/mingit/
+
+# 系统与编辑器噪音
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.idea/
+.vscode/
