@@ -1,0 +1,22 @@
+{
+  "dataVersion": "2026Q3",
+  "dataAsOf": "2026-08",
+  "updateCadence": "quarterly",
+  "nextScheduledUpdate": "2026-12",
+  "changelog": [
+    {
+      "version": "2026Q3",
+      "date": "2026-09",
+      "items": [
+        "建立季度更新机制：version.json 版本清单 + 刷新脚本 + 季度提醒自动化"
+      ]
+    },
+    {
+      "version": "2026Q2",
+      "date": "2026-08",
+      "items": [
+        "初始数据集：重点 15 国完整 6 维评分 + 长尾市场基础信息，数据截至 2026-08"
+      ]
+    }
+  ]
+}

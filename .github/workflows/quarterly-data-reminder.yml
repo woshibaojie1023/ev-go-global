@@ -1,0 +1,43 @@
+name: quarterly-data-reminder
+
+# 季度数据更新提醒：每季度首月（1/4/7/10 月）5 号运行，
+# 自动创建一条「数据刷新检查清单」Issue，保证数据至少一个季度更新一次。
+on:
+  schedule:
+    - cron: "17 2 5 1,4,7,10 *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compute quarter label
+        id: q
+        run: |
+          Y=$(date +%Y)
+          M=$(date +%-m)
+          case $M in
+            1) Q=1;; 4) Q=2;; 7) Q=3;; 10) Q=4;;
+          esac
+          echo "label=${Y}Q${Q}" >> "$GITHUB_OUTPUT"
+      - name: Create refresh-checklist issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "季度数据刷新检查清单 · ${{ steps.q.outputs.label }}" \
+            --body "## 季度数据刷新（${{ steps.q.outputs.label }}）
+
+          按以下步骤完成本季数据更新：
+
+          1. 运行刷新脚本：
+             \`\`\`
+             node tools/refresh-data.js --quarter=${{ steps.q.outputs.label }} --asof=YYYY-MM --next=YYYY-MM
+             \`\`\`
+          2. 按脚本输出的人工检查清单核对并编辑 \`data.js\`（渗透率/份额/政策/排名）
+          3. 填写 \`version.json\` 中 changelog 的本季变化
+          4. 本地双击 \`index.html\` 自检，提交后 GitHub Pages 自动部署
+          5. 数据更新机制详见 README「数据更新机制」章节"
