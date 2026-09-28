@@ -107,7 +107,9 @@ ev-go-global/
 ├── tools/
 │   └── refresh-data.js   # 季度刷新辅助脚本（版本元数据机械更新）
 ├── .github/workflows/
+│   ├── deploy.yml                   # 推送 main 即自动构建并发布到 GitHub Pages
 │   └── quarterly-data-reminder.yml  # 每季度自动建 Issue 提醒刷新
+├── publish.bat    # 一键发布：提交 → 同步远程 → 推送（用内置便携 Git，免安装）
 └── assets/         # 截图、OG 图、（可选）简历二维码
 ```
 
@@ -126,7 +128,13 @@ ev-go-global/
 
 3. **定时提醒 `.github/workflows/quarterly-data-reminder.yml`**：每季度首月（1/4/7/10 月）5 号自动创建一条刷新检查清单 Issue，也可在 Actions 页手动触发。
 
-此外，页面加载后会异步探测线上 `version.json`：当用户本地缓存的版本落后于线上时，弹出提示引导刷新（`file://` 本地打开时自动跳过探测）。提交到 GitHub 后 Pages 自动部署，读者通过资源版本号拿到新数据。
+此外，页面加载后会异步探测线上 `version.json`：当用户本地缓存的版本落后于线上时，弹出提示引导刷新（`file://` 本地打开时自动跳过探测）。
+
+### 7.1 自动发布链路
+
+发布由 `.github/workflows/deploy.yml` 承载：每次向 `main` 推送，先执行 `build` 任务把整站打包为 Pages 产物，再由 `deploy` 任务发布到 `github-pages` 环境；也支持在 Actions 页手动触发。仓库的 Pages 发布源需设为 **GitHub Actions**（Settings → Pages → Build and deployment → Source）。
+
+本地无需安装 Git：仓库内置便携版 Git（`tools/mingit/`，已被 `.gitignore` 忽略），双击 `publish.bat` 即自动完成「提交改动 → 拉取远程 → 合并（冲突时本地版本优先）→ 推送」，首次运行会弹出 GitHub 登录窗口。推送成功后约 1 分钟，读者通过资源版本号自动拿到新数据。
 
 ## 8. Roadmap 与局限
 
